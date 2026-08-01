@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Узнайте, насколько доступен ваш сайт на самом деле</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Проверьте, действительно ли доступен ваш сайт незрячим людям</h1>
+    </header>
+
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" >Проверить</button>
+        </form>
+
+        {% if errors %}
+        <h2>Результаты проверки</h2>
+
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </main>
+
+</body>
+</html>
