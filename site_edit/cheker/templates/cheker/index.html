@@ -23,8 +23,12 @@
 
         {% if errors %}
         <h2>Результаты проверки</h2>
-
-        <ul>
+        {% if score is not None %}
+        <p class="score">
+            Доступность сайта: {{ score }}%
+        </p>
+        {% endif %}
+            <ul>
             {% for error in errors %}
                 <li>{{ error.message }}</li>
             {% endfor %}
