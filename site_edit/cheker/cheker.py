@@ -24,7 +24,7 @@ def check_image(soup):
         "count": miss_alt_count,
         "total": len(items),
         "message": (
-            f"ОШИБКА❌: Изображений без alt: {miss_alt_count}."
+            f"ОШИБКА❌: Изображений без alt: {miss_alt_count}. Добавьте атрибут alt ко всем изображениям."
             if miss_alt_count > 0
             else "✅ У всех изображений есть атрибут alt."
         )
@@ -53,7 +53,7 @@ def check_buttons(soup):
         "total": len(items),
         "message": (
             f"КРИТИЧЕСКАЯ ОШИБКА❌: Неподписанных кнопок: "
-            f"{miss_button_count}."
+            f"{miss_button_count}. Добавьте описание ко всем кнопкам."
             if miss_button_count > 0
             else "✅ У всех кнопок есть доступное название."
         )
@@ -71,7 +71,7 @@ def check_h1(soup):
         "total": 1,
         "message": (
             f"ПРЕДУПРЕЖДЕНИЕ⚠️: Найдено несколько заголовков h1. "
-            f"Лишних заголовков: {many_h1_count}."
+            f"Лишних заголовков: {many_h1_count}. Оставьте только один заголовок h1 на странице."
             if many_h1_count > 0
             else "✅ Количество заголовков h1 допустимо."
         )
@@ -89,11 +89,10 @@ def check_div_onclick(soup):
     return {
         "type": "div_onclick",
         "count": div_onclick_count,
-        # Проверяем наличие нарушения как отдельное правило
         "total": 1,
         "message": (
             f"КРИТИЧЕСКАЯ ОШИБКА❌: Интерактивных div с onclick: "
-            f"{div_onclick_count}."
+            f"{div_onclick_count}.Вместо div с onclick используйте button. "
             if div_onclick_count > 0
             else "✅ Интерактивные div с onclick не найдены."
         )
@@ -116,7 +115,7 @@ def check_empty_alt(soup):
         "total": len(items),
         "message": (
             f"ПРЕДУПРЕЖДЕНИЕ⚠️: Изображений с пустым alt: "
-            f"{empty_alt_count}. Проверьте, являются ли они декоративными."
+            f"{empty_alt_count}. Проверьте, являются ли они декоративными.Если нет — добавьте осмысленное описание (alt)."
             if empty_alt_count > 0
             else "✅ Пустые alt не найдены."
         )
@@ -171,7 +170,7 @@ def check_form_labels(soup):
         "total": len(checked_fields),
         "message": (
             f"КРИТИЧЕСКАЯ ОШИБКА❌: Полей формы без подписи: "
-            f"{missing_label_count}."
+            f"{missing_label_count}.Добавьте подписи ко всем полям формы."
             if missing_label_count > 0
             else "✅ У всех проверенных полей формы есть подпись."
         )
@@ -193,7 +192,7 @@ def check_links_without_href(soup):
         "count": missing_href_count,
         "total": len(links),
         "message": (
-            f"ОШИБКА❌: Ссылок без href: {missing_href_count}."
+            f"ОШИБКА❌: Ссылок без href: {missing_href_count}. Добавьте атрибут href ко всем ссылкам"
             if missing_href_count > 0
             else "✅ У всех ссылок есть href."
         )
@@ -231,7 +230,7 @@ def check_empty_links(soup):
         "total": len(links),
         "message": (
             f"КРИТИЧЕСКАЯ ОШИБКА❌: Ссылок без доступного названия: "
-            f"{empty_link_count}."
+            f"{empty_link_count}. Добавьте доступное название всем ссылкам."
             if empty_link_count > 0
             else "✅ У всех ссылок есть доступное название."
         )
@@ -260,7 +259,7 @@ def check_link_images_alt(soup):
         "total": len(link_images),
         "message": (
             f"КРИТИЧЕСКАЯ ОШИБКА❌: Изображений внутри ссылок "
-            f"без описания: {missing_link_image_alt_count}."
+            f"без описания: {missing_link_image_alt_count}. Добавьте описание всем изображениям внутри ссылок."
             if missing_link_image_alt_count > 0
             else "✅ У изображений внутри ссылок есть описание."
         )
@@ -277,7 +276,7 @@ def check_html_lang(soup):
             "total": 1,
             "message": (
                 "ОШИБКА❌: Не найден тег html. "
-                "Проверьте структуру документа."
+                "Проверьте структуру документа и добавьте тег html."
             )
         }
 
@@ -289,7 +288,7 @@ def check_html_lang(soup):
             "count": 1,
             "total": 1,
             "message": (
-                "ОШИБКА❌: У тега html отсутствует атрибут lang."
+                "ОШИБКА❌: У тега html отсутствует атрибут lang(язык). Добавьте атрибут lang к тегу html."
             )
         }
 
@@ -317,7 +316,7 @@ def check_iframe_title(soup):
         "total": len(items),
         "message": (
             f"ОШИБКА❌: Элементов iframe без title: "
-            f"{missing_title_count}."
+            f"{missing_title_count}. Добавьте атрибут title ко всем iframe."
             if missing_title_count > 0
             else "✅ У всех iframe есть title."
         )
@@ -353,7 +352,7 @@ def check_positive_tabindex(soup):
         "message": (
             f"ОШИБКА❌: Положительных tabindex: "
             f"{positive_tabindex_count}. "
-            f"Некорректных tabindex: {invalid_tabindex_count}."
+            f"Некорректных tabindex: {invalid_tabindex_count}. Избегайте положительных значений tabindex"
             if error_count > 0
             else "✅ Некорректные значения tabindex не найдены."
         )
@@ -367,13 +366,13 @@ def check_site(url):
     soup = BeautifulSoup(response.text, "html.parser")
 
     checks = [
-        check_div_onclick,
         check_buttons,
-        check_image,
+        check_div_onclick,
         check_form_labels,
-        check_links_without_href,
         check_empty_links,
         check_link_images_alt,
+        check_image,
+        check_links_without_href,
         check_html_lang,
         check_iframe_title,
         check_positive_tabindex,
@@ -381,7 +380,6 @@ def check_site(url):
         check_empty_alt
     ]
 
-    # Сумма весов равна 100
     weights = {
         "div_onclick": 12,
         "button_name": 12,
