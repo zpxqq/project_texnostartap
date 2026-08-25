@@ -1,0 +1,211 @@
+<!doctype html>
+{% load static %}
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои сайты — Vedi</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'cheker/styles.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <a
+                class="brand-logo white"
+                href="{% url 'index' %}"
+                aria-label="Vedi — главная"
+            >
+                <img
+                    src="{% static 'cheker/logo-compact.png' %}"
+                    alt="Vedi"
+                >
+            </a>
+
+        </div>
+
+        <nav class="side-nav" aria-label="Навигация личного кабинета">
+
+            <a
+                class="active"
+                href="{% url 'dashboard' %}"
+            >
+                Мои сайты
+            </a>
+
+            <a href="{% url 'index' %}#check">
+                Быстрая проверка
+            </a>
+
+            <a href="{% url 'dashboard' %}#history">
+                История
+            </a>
+
+            <a href="{% url 'login' %}">
+                Профиль
+            </a>
+
+        </nav>
+
+
+
+    </aside>
+
+    <main class="main">
+
+        <div class="app-head">
+
+            <div>
+                <h1>
+                    Мои сайты
+                </h1>
+
+                <p>
+                    Сайты, доступность которых вы хотите
+                    проверять регулярно.
+                </p>
+            </div>
+
+            <div class="head-actions">
+
+                <a
+                    class="btn btn-primary"
+                    href="{% url 'index' %}#check"
+                >
+                    + Добавить сайт
+                </a>
+
+                <a
+                    class="avatar"
+                    href="{% url 'login' %}"
+                    aria-label="Профиль"
+                >
+                    V
+                </a>
+
+            </div>
+
+        </div>
+
+        <section class="projects-section">
+
+            {% for site in sites %}
+
+                <a
+                    class="project-card"
+                    href="{% url 'project' site.id %}"
+                >
+
+                    <div class="project-top">
+
+                        <div>
+
+                            <div class="project-name">
+                                {{ site.name }}
+                            </div>
+
+                            <div class="project-url">
+                                {{ site.url }}
+                            </div>
+
+                        </div>
+
+                        {% with last_check=site.checks.last %}
+
+                            {% if last_check %}
+                                <div class="score-pill">
+                                    {{ last_check.score }}
+                                    <span>Vedi Score</span>
+                                </div>
+                            {% else %}
+                                <div class="score-pill">
+                                    —
+                                    <span>Нет проверок</span>
+                                </div>
+                            {% endif %}
+
+                        {% endwith %}
+
+                    </div>
+
+                    <div class="project-meta">
+
+                        <div>
+                            <strong>{{ site.checks.count }}</strong>
+                            проверки
+                        </div>
+
+                        <div>
+                            <strong>
+                                {{ site.created_at|date:"d.m.Y" }}
+                            </strong>
+                            добавлен
+                        </div>
+
+                    </div>
+
+                </a>
+
+            {% empty %}
+
+                <p class="empty-message">
+                    Вы ещё не добавили ни одного сайта.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+        <section id="history" class="history-section">
+
+            <h2>
+                История
+            </h2>
+
+            {% for site in sites %}
+
+                <div class="history-item">
+
+                    <strong>
+                        {{ site.name }}
+                    </strong>
+
+                    <span>
+                        Проверок: {{ site.checks.count }}
+                    </span>
+
+                    <a href="{% url 'project' site.id %}">
+                        Посмотреть
+                    </a>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    История пока пуста.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{% static 'cheker/app.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<svg width="232" height="56" viewBox="0 0 232 56" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vedi</title>
+  <desc id="desc">Логотип Vedi: знак глаза с элементами кода и название</desc>
+  <defs>
+    <linearGradient id="eyeStrokeW" x1="8" y1="28" x2="72" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A16BFF"/>
+      <stop offset="0.52" stop-color="#69A0FF"/>
+      <stop offset="1" stop-color="#59E1D4"/>
+    </linearGradient>
+    <linearGradient id="slashGradW" x1="38" y1="12" x2="45" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#59E1D4"/>
+      <stop offset="0.45" stop-color="#72C8FF"/>
+      <stop offset="1" stop-color="#9A73FF"/>
+    </linearGradient>
+    <linearGradient id="pupilGradW" x1="24" y1="18" x2="48" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#72C8FF"/>
+      <stop offset="1" stop-color="#9A73FF"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M8 28C14.8 18.8 24.4 14 34.5 14C44.6 14 54.2 18.8 61 28C54.2 37.2 44.6 42 34.5 42C24.4 42 14.8 37.2 8 28Z" stroke="url(#eyeStrokeW)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M24.5 23L19 28L24.5 33" stroke="#8A7BFF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M44.5 23L50 28L44.5 33" stroke="#74D8FF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M38.8 18.5L30.2 37.5" stroke="url(#slashGradW)" stroke-width="4.8" stroke-linecap="round"/>
+  <circle cx="34.5" cy="28" r="5.6" fill="url(#pupilGradW)" opacity="0.2"/>
+
+  <text x="86" y="40" fill="#FFFFFF" font-size="38" font-weight="750" letter-spacing="-1.6" font-family="Inter, Arial, sans-serif">Vedi</text>
+</svg>

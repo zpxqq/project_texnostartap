@@ -1,55 +1,759 @@
-<!DOCTYPE html>
+
+<!doctype html>
+{% load static %}
 <html lang="ru">
+
 <head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Узнайте, насколько доступен ваш сайт на самом деле</title>
-     <link rel="stylesheet" href="{% static 'cheker/styles.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Vedi — платформа цифровой доступности сайтов">
+
+    <title>Vedi — доступность начинается с кода</title>
+
+    <link rel="stylesheet" href="{% static 'cheker/styles.css' %}">
 </head>
 
 <body>
 
-    <header>
-        <h1>Проверьте, действительно ли доступен ваш сайт незрячим людям</h1>
-    </header>
+<header class="topbar">
+    <div class="container nav">
 
-    <main>
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit" >Проверить</button>
-        </form>
+        <a class="brand-logo"
+           href="{% url 'index' %}"
+           aria-label="Vedi — главная">
 
-<!--        {% if errors %}-->
-        <h2>Результаты проверки</h2>
-        {% if score is not None %}
-        <p class="score">
-            Доступность сайта: {{ score }}%
-        </p>
-        <p class="summary">
-            {{ summary }}
-        </p>
-        {% endif %}
-<!--            <ul>-->
-<!--            {% for error in errors %}-->
-<!--                <li>{{ error.message }}</li>-->
-<!--            {% endfor %}-->
-<!--                -->
-<!--        </ul>-->
-        <h3>Основные рекомендации</h3>
-        <ul>
-            {% for error in errors|slice:":5" %}
-                <li>{{ error.message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-        {% if fixed_site %}
-        <h2>Исправленная разметка сайта</h2>
+            <img
+                src="{% static 'cheker/logo-compact.png' %}"
+                alt="Vedi"
+            >
 
-        <pre>{{ fixed_site }}</pre>
-    {% endif %}
-    </main>
+        </a>
+
+        <nav class="nav-links" aria-label="Главная навигация">
+
+            <a href="#problem">
+                О доступности
+            </a>
+
+            <a href="#how">
+                Как работает
+            </a>
+
+            <a href="{% url 'dashboard' %}">
+                Мои сайты
+            </a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a class="btn btn-ghost" href="{% url 'login' %}">
+                Войти
+            </a>
+
+            <a class="btn btn-primary" href="#check">
+                Проверить сайт
+            </a>
+
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+
+
+    <section class="hero" id="check">
+
+        <div class="container hero-grid">
+
+            <div>
+
+                <span class="tag">
+                    <span class="pulse"></span>
+                    Платформа цифровой доступности
+                </span>
+
+                <h1>
+                    Сайт может выглядеть отлично.
+                    <span class="gradient-text">
+                        Но быть непонятным на слух.
+                    </span>
+                </h1>
+
+                <p class="lead">
+                    Vedi помогает проверить разметку сайта,
+                    увидеть проблемы для пользователей скринридеров
+                    и понять, что именно стоит исправить.
+                </p>
+
+
+                <div class="check-shell">
+
+                    <form
+                        class="check-card check-form"
+                        method="post"
+                    >
+
+                        {% csrf_token %}
+
+                        <div
+                            class="url-icon"
+                            aria-hidden="true"
+                        >
+                            ↗
+                        </div>
+
+                        <input
+                            type="url"
+                            name="url"
+                            aria-label="Адрес сайта"
+                            placeholder="https://ваш-сайт.ru"
+                            required
+                        >
+
+                        <button
+                            class="btn btn-primary"
+                            type="submit"
+                        >
+                            Проверить сайт
+                        </button>
+
+                    </form>
+
+                    <div class="check-note">
+                        Для быстрой проверки доступ к исходному коду не нужен
+                    </div>
+
+                </div>
+
+
+                <div class="hero-meta">
+
+                    <span>
+                        <b>Vedi Score</b>
+                        0–100
+                    </span>
+
+                    <span>
+                        <b>Понятные</b>
+                        объяснения
+                    </span>
+
+                    <span>
+                        <b>Можно</b>
+                        послушать ошибку
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-preview">
+
+                <div class="floating-chip">
+
+                    <div class="chip-icon">
+                        ▶
+                    </div>
+
+                    <div>
+                        <strong>Как это звучит</strong>
+                        <span>Сравните до и после</span>
+                    </div>
+
+                </div>
+
+
+                <div class="preview-window">
+
+                    <div class="preview-inner">
+
+                        <div class="browser-bar">
+
+                            <i class="browser-dot"></i>
+                            <i class="browser-dot"></i>
+                            <i class="browser-dot"></i>
+
+                            <span class="browser-url">
+                                altairdonso.ru
+                            </span>
+
+                        </div>
+
+
+                        <div class="preview-body">
+
+                            <div class="preview-head">
+
+                                <img
+                                    class="small-logo"
+                                    src="{% static 'cheker/logo-compact.png' %}"
+                                    alt="Vedi"
+                                >
+
+                                <span class="preview-status">
+                                    Проверка завершена
+                                </span>
+
+                            </div>
+
+
+                            <div class="score-area">
+
+                                <div class="score-ring">
+
+                                    <div class="score-value">
+                                        <strong>74</strong>
+                                        <span>Vedi Score</span>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="score-copy">
+
+                                    <h3>
+                                        Есть что улучшить
+                                    </h3>
+
+                                    <p>
+                                        Найдено 8 проблем,
+                                        которые могут влиять
+                                        на работу со скринридером.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="preview-issues">
+
+                                <div class="preview-issue">
+                                    <i class="dot red"></i>
+
+                                    <span>
+                                        Кнопка без понятного названия
+                                    </span>
+
+                                    <small>
+                                        важно
+                                    </small>
+                                </div>
+
+
+                                <div class="preview-issue">
+
+                                    <i class="dot yellow"></i>
+
+                                    <span>
+                                        Поле формы без подписи
+                                    </span>
+
+                                    <small>
+                                        средне
+                                    </small>
+
+                                </div>
+
+
+                                <div class="preview-issue">
+
+                                    <i class="dot blue"></i>
+
+                                    <span>
+                                        Изображение требует проверки
+                                    </span>
+
+                                    <small>
+                                        проверить
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <section class="section alt" id="problem">
+
+        <div class="container">
+
+            <div class="section-head">
+
+                <span class="eyebrow">
+                    Почему это важно
+                </span>
+
+                <h2>
+                    Вы видите интерфейс.
+                    <span class="gradient-text">
+                        А что слышит пользователь?
+                    </span>
+                </h2>
+
+                <p>
+                    Скринридер — программа, которая озвучивает элементы
+                    интерфейса и помогает работать с сайтом без
+                    необходимости видеть экран.
+
+                    Если структура страницы сделана плохо,
+                    визуально понятный интерфейс может
+                    оказаться непонятным на слух.
+                </p>
+
+            </div>
+
+
+            <div class="listen-grid">
+
+                <div class="visual-card">
+
+                    <div class="visual-title">
+
+                        <h3>
+                            Обычный взгляд на форму
+                        </h3>
+
+                        <span>
+                            всё выглядит понятно
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-demo">
+
+                        <div class="demo-brand">
+                            Войти в аккаунт
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Электронная почта
+                            </label>
+
+                            <div class="fake-input">
+                                name@example.ru
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Пароль
+                            </label>
+
+                            <div class="fake-input">
+                                ••••••••
+                            </div>
+
+                        </div>
+
+
+                        <div class="fake-button">
+                            Войти
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="listen-card">
+
+                    <h3>
+                        Послушайте разницу
+                    </h3>
+
+                    <p>
+                        Внешне форма остаётся той же.
+                        Но правильная разметка меняет то,
+                        какую информацию получает пользователь.
+                    </p>
+
+
+                    <div class="sound-compare">
+
+
+                        <div class="sound-row">
+
+                            <div class="sound-top">
+
+                                <span class="sound-label">
+                                    Плохая разметка
+                                </span>
+
+                                <button
+                                    class="audio-btn speak"
+                                    type="button"
+                                    data-text="Поле редактирования. Поле редактирования. Кнопка."
+                                >
+                                    ▶ Послушать
+                                </button>
+
+                            </div>
+
+                            <div class="transcript bad">
+                                «Поле редактирования.
+                                Поле редактирования.
+                                Кнопка.»
+                            </div>
+
+                        </div>
+
+
+                        <div class="sound-row">
+
+                            <div class="sound-top">
+
+                                <span class="sound-label">
+                                    Корректная разметка
+                                </span>
+
+                                <button
+                                    class="audio-btn speak"
+                                    type="button"
+                                    data-text="Электронная почта. Поле ввода. Пароль. Защищённое поле ввода. Войти. Кнопка."
+                                >
+                                    ▶ Послушать
+                                </button>
+
+                            </div>
+
+                            <div class="transcript good">
+                                «Электронная почта.
+                                Поле ввода.
+                                Пароль.
+                                Защищённое поле ввода.
+                                Войти.
+                                Кнопка.»
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="insight">
+                        Vedi не просто показывает техническую ошибку —
+                        он помогает понять, почему она важна для человека.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="section" id="how">
+
+        <div class="container">
+
+            <div class="section-head">
+
+                <span class="eyebrow">
+                    Логика Vedi
+                </span>
+
+                <h2>
+                    Проверь. Услышь. Исправь. Сохрани.
+                </h2>
+
+                <p>
+                    Простой путь от первой проверки
+                    до постоянной работы с доступностью сайта.
+                </p>
+
+            </div>
+
+
+            <div class="steps">
+
+                <article class="step" data-n="1">
+
+                    <div class="step-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Проверь
+                    </h3>
+
+                    <p>
+                        Введите адрес страницы и получите
+                        Vedi Score и список найденных проблем.
+                    </p>
+
+                </article>
+
+
+                <article class="step" data-n="2">
+
+                    <div class="step-icon">
+                        ▶
+                    </div>
+
+                    <h3>
+                        Услышь
+                    </h3>
+
+                    <p>
+                        Послушайте, как конкретный элемент
+                        может восприниматься через скринридер.
+                    </p>
+
+                </article>
+
+
+                <article class="step" data-n="3">
+
+                    <div class="step-icon">
+                        &lt;/&gt;
+                    </div>
+
+                    <h3>
+                        Исправь
+                    </h3>
+
+                    <p>
+                        Получите понятное объяснение и рекомендацию,
+                        что изменить в разметке.
+                    </p>
+
+                </article>
+
+
+                <article class="step" data-n="4">
+
+                    <div class="step-icon">
+                        ↗
+                    </div>
+
+                    <h3>
+                        Сохрани
+                    </h3>
+
+                    <p>
+                        Добавьте сайт в проекты и следите,
+                        как меняется результат после новых проверок.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="section alt">
+
+        <div class="container">
+
+            <div class="feature-band">
+
+                <div>
+
+                    <span
+                        class="eyebrow"
+                        style="color:#9C94FF"
+                    >
+                        Не просто чекер
+                    </span>
+
+                    <h2>
+                        Один сайт — один живой проект.
+                    </h2>
+
+                    <p>
+                        После регистрации у сайта появляется
+                        история проверок, динамика Vedi Score
+                        и единый список проблем,
+                        к которому можно возвращаться.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-points">
+
+                    <div class="feature-point">
+
+                        <strong>
+                            Vedi Score
+                        </strong>
+
+                        <span>
+                            Общая оценка автоматической проверки
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-point">
+
+                        <strong>
+                            Как это звучит
+                        </strong>
+
+                        <span>
+                            Понятная демонстрация влияния ошибки
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-point">
+
+                        <strong>
+                            История
+                        </strong>
+
+                        <span>
+                            Динамика результата после исправлений
+                        </span>
+
+                    </div>
+
+
+                    <div class="feature-point">
+
+                        <strong>
+                            Проекты
+                        </strong>
+
+                        <span>
+                            Несколько сайтов в одном кабинете
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="cta">
+
+        <div class="container">
+
+            <div class="cta-card">
+
+                <div>
+
+                    <h2>
+                        Доступность начинается с кода.
+                    </h2>
+
+                    <p>
+                        Начните с одной страницы:
+                        посмотрите её Vedi Score
+                        и разберите первые проблемы.
+                    </p>
+
+                </div>
+
+
+                <a
+                    class="btn btn-primary"
+                    href="#check"
+                >
+                    Проверить сайт
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="container footer-row">
+
+        <a
+            class="brand-logo full"
+            href="{% url 'index' %}"
+        >
+
+            <img
+                src="{% static 'cheker/logo-full.png' %}"
+                alt="Vedi"
+            >
+
+        </a>
+
+        <span>
+            Демонстрационный интерфейс MVP
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<div
+    class="loading"
+    aria-live="polite"
+>
+
+    <div class="loading-box">
+
+        <div class="spinner"></div>
+
+        <strong>
+            Vedi проверяет страницу…
+        </strong>
+
+        <div
+            class="muted"
+            style="margin-top:5px;font-size:12px"
+        >
+            Анализируем разметку страницы
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'cheker/app.js' %}"></script>
 
 </body>
+
 </html>
+```

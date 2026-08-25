@@ -1,0 +1,319 @@
+
+
+<!doctype html>
+{% load static %}
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Результат проверки — Vedi</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'cheker/styles.css' %}"
+    >
+</head>
+
+
+<body>
+
+<header class="topbar">
+
+    <div class="container nav">
+
+        <a
+            class="brand-logo"
+            href="{% url 'index' %}"
+            aria-label="Vedi — главная"
+        >
+
+            <img
+                src="{% static 'cheker/logo-compact.png' %}"
+                alt="Vedi"
+            >
+
+        </a>
+
+
+        <div class="nav-actions">
+
+            <a
+                class="btn btn-secondary"
+                href="{% url 'index' %}#check"
+            >
+                Новая проверка
+            </a>
+
+            <a
+                class="btn btn-primary"
+                href="{% url 'login' %}"
+            >
+                Войти
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+    <section class="page-hero">
+
+        <div class="container">
+
+            <span class="eyebrow">
+                Результат проверки
+            </span>
+
+
+            <h1>
+                Что Vedi нашёл на
+
+                <span class="gradient-text">
+                    {{ url }}
+                </span>
+            </h1>
+
+
+            {% if page_note %}
+
+                <p>
+                    {{ page_note }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <section class="result-section">
+
+        <div class="container result-layout">
+
+
+            <aside class="card score-card">
+
+                <div class="score-ring">
+
+                    <div class="score-value">
+
+                        <strong>
+                            {{ score }}
+                        </strong>
+
+                        <span>
+                            из 100
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <h3>
+                    Vedi Score
+                </h3>
+
+
+                {% if summary %}
+
+                    <p>
+                        {{ summary }}
+                    </p>
+
+                {% endif %}
+
+
+                <div class="category">
+
+                    <span>
+                        Найдено проблем
+                    </span>
+
+                    <strong>
+                        {{ errors|length }}
+                    </strong>
+
+                </div>
+
+            </aside>
+
+
+            <section class="card">
+
+
+                <div class="issue-card-head">
+
+                    <div>
+
+                        <h2>
+                            Найденные проблемы
+                        </h2>
+
+                        <p>
+                            Здесь показаны проблемы,
+                            найденные при автоматической проверке страницы.
+                        </p>
+
+                    </div>
+
+
+                    <span class="badge high">
+
+                        {{ errors|length }}
+
+                        {% if errors|length == 1 %}
+                            проблема
+                        {% elif errors|length < 5 %}
+                            проблемы
+                        {% else %}
+                            проблем
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="issue-list">
+
+
+                    {% for error in errors %}
+
+
+                        <article class="issue-row">
+
+                            <i class="dot red"></i>
+
+
+                            <div>
+
+                                <h4>
+                                    {{ error.message }}
+                                </h4>
+
+
+                                <p>
+                                    Найдено элементов:
+                                    {{ error.count }}
+                                </p>
+
+
+                                <div class="issue-actions">
+
+                                    <button
+                                        class="btn btn-secondary btn-small speak"
+                                        type="button"
+                                        data-text="{{ error.message }}"
+                                    >
+                                        ▶ Послушать
+                                    </button>
+
+
+                                    <button
+                                        class="btn btn-ghost btn-small"
+                                        type="button"
+                                    >
+                                        Что это значит?
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge high">
+
+                                {{ error.count }}
+
+                            </span>
+
+                        </article>
+
+
+                    {% empty %}
+
+
+                        <article class="issue-row">
+
+                            <i class="dot blue"></i>
+
+
+                            <div>
+
+                                <h4>
+                                    Критичных проблем не найдено
+                                </h4>
+
+                                <p>
+                                    Автоматическая проверка не обнаружила
+                                    ошибок из набора правил Vedi.
+                                </p>
+
+                            </div>
+
+                        </article>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+                <div class="save-strip">
+
+                    <div>
+
+                        <strong>
+                            Хотите сохранить этот сайт?
+                        </strong>
+
+                        <span>
+                            Создайте проект и смотрите
+                            историю следующих проверок.
+                        </span>
+
+                    </div>
+
+
+                    <a href="{% url 'dashboard' %}">
+                        Сохранить проект
+                    </a>
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<script src="{% static 'cheker/app.js' %}"></script>
+
+
+</body>
+
+</html>
+

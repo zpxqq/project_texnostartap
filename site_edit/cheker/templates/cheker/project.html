@@ -1,0 +1,520 @@
+<!doctype html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ site.name }} — Vedi</title>
+    <link rel="stylesheet" href="{% static 'cheker/styles.css' %}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <a class="brand-logo white" href="{% url 'index' %}">
+                <img src="/static/cheker/logo-compact.png" alt="Vedi">
+            </a>
+        </div>
+
+        <nav class="side-nav">
+            <a href="{% url 'dashboard' %}">
+                Мои сайты
+            </a>
+
+            <a class="active" href="#">
+                Обзор
+            </a>
+
+            <a href="#issues">
+                Проблемы
+            </a>
+
+            <a href="#sound">
+                Как это звучит
+            </a>
+
+            <a href="#history">
+                История
+            </a>
+        </nav>
+
+        <div class="side-bottom">
+            <span data-project-url>
+                {{ site.url }}
+            </span>
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+
+        <div class="app-head">
+
+            <div>
+
+                <h1>
+                    {{ site.name }}
+                </h1>
+
+                <p>
+
+                    <span data-project-url>
+                        {{ site.url }}
+                    </span>
+
+                    {% if last_check %}
+                        · последняя проверка
+                        {{ last_check.checked_at|date:"d.m.Y H:i" }}
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <div class="head-actions">
+
+                <a
+                    class="btn btn-secondary"
+                    href="{% url 'index' %}"
+                >
+                    Проверить снова
+                </a>
+
+                <div class="avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+            <section class="card">
+
+                <div class="panel-title">
+
+                    <div>
+
+                        <h2>
+                            Состояние сайта
+                        </h2>
+
+                        <p>
+                            Динамика автоматической оценки Vedi.
+                        </p>
+
+                    </div>
+
+
+                    {% if checks|length > 1 %}
+
+                        <span class="badge ok">
+                            {{ last_check.score }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="metric-row">
+
+
+                    <div class="metric">
+
+                        {% if last_check %}
+
+                            <strong>
+                                {{ last_check.score }}
+                            </strong>
+
+                        {% else %}
+
+                            <strong>
+                                —
+                            </strong>
+
+                        {% endif %}
+
+                        <span>
+                            Vedi Score
+                        </span>
+
+                    </div>
+
+                    <div class="metric">
+
+                        {% if last_check %}
+
+                            <strong>
+                                {{ last_check.results.count }}
+                            </strong>
+
+                        {% else %}
+
+                            <strong>
+                                0
+                            </strong>
+
+                        {% endif %}
+
+                        <span>
+                            проблем
+                        </span>
+
+                    </div>
+
+                    <div class="metric">
+
+                        <strong>
+                            {{ checks|length }}
+                        </strong>
+
+                        <span>
+                            проверки
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="chart" id="history-chart">
+
+                    {% for check in checks reversed %}
+
+                        <div class="bar-wrap">
+
+                            <div
+                                class="bar"
+                                style="--h: {{ check.score }}%"
+                            ></div>
+
+                            {{ check.score }}
+
+                        </div>
+
+                    {% empty %}
+
+                        <p>
+                            История проверок пока пуста.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+
+            <aside class="card next-card">
+
+                <span
+                    class="eyebrow"
+                    style="color:#9B94FF"
+                >
+                    Следующий шаг
+                </span>
+
+                <h3>
+                    Начните с самых заметных проблем
+                </h3>
+
+                <p>
+                    Vedi покажет не только техническое правило,
+                    но и то, как ошибка влияет на пользователя.
+                </p>
+
+                <a
+                    href="#issues"
+                    class="btn btn-primary"
+                    style="width:100%;margin-top:12px"
+                >
+                    Посмотреть проблемы
+                </a>
+
+                <a
+                    href="#sound"
+                    class="btn btn-secondary"
+                    style="width:100%;margin-top:9px"
+                >
+                    Послушать пример
+                </a>
+
+            </aside>
+
+        </div>
+
+
+        <section
+            class="card"
+            id="history"
+            style="margin-top:18px"
+        >
+
+            <div class="panel-title">
+
+                <div>
+
+                    <h2>
+                        История проверок
+                    </h2>
+
+                    <p>
+                        Все проверки этого сайта.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="history-list">
+
+                {% for check in checks %}
+
+                    <div class="history-row">
+
+                        <div>
+
+                            <strong>
+                                Проверка
+                            </strong>
+
+                            <p>
+                                {{ check.checked_at|date:"d.m.Y H:i" }}
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                {{ check.score }}
+                            </strong>
+
+                            <span>
+                                Vedi Score
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <p>
+                        Проверок пока нет.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <section
+            class="card"
+            id="issues"
+            style="margin-top:18px"
+        >
+
+            <div class="panel-title">
+
+                <div>
+
+                    <h2>
+                        Проблемы
+                    </h2>
+
+                    <p>
+                        Приоритетный список для следующего исправления.
+                    </p>
+
+                </div>
+
+
+                {% if last_check %}
+
+                    <span class="badge high">
+                        {{ last_check.results.count }} найдено
+                    </span>
+
+                {% else %}
+
+                    <span class="badge high">
+                        0 найдено
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="issue-list">
+
+                {% if last_check %}
+
+                    {% for result in last_check.results.all %}
+
+                        <article class="issue-row">
+
+                            <i class="dot red"></i>
+
+                            <div>
+
+                                <h4>
+                                    {{ result.type }}
+                                </h4>
+
+                                <p>
+                                    {{ result.message }}
+                                </p>
+
+                            </div>
+
+                            <span class="badge medium">
+                                {{ result.count }}
+                            </span>
+
+                        </article>
+
+                    {% empty %}
+
+                        <p>
+                            Проблем не найдено.
+                        </p>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>
+                        Сайт ещё не проверялся.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <section
+            class="card"
+            id="sound"
+            style="margin-top:18px"
+        >
+
+            <div class="panel-title">
+
+                <div>
+
+                    <h2>
+                        Как это звучит
+                    </h2>
+
+                    <p>
+                        Одна и та же кнопка до и после корректной разметки.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="listen-grid"
+                style="margin-top:20px"
+            >
+
+
+                <div class="listen-card">
+
+                    <h3>
+                        Сейчас
+                    </h3>
+
+                    <p>
+                        Для пользователя назначение элемента неясно.
+                    </p>
+
+                    <button
+                        class="audio-btn speak"
+                        data-text="Кнопка"
+                    >
+                        ▶ Послушать
+                    </button>
+
+                    <div class="code-sample">
+
+                        <span class="bad-code">
+                            &lt;button class="cart-icon"&gt;…&lt;/button&gt;
+                        </span>
+
+                    </div>
+
+                    <div class="transcript bad">
+                        «Кнопка»
+                    </div>
+
+                </div>
+
+
+                <div class="listen-card">
+
+                    <h3>
+                        После исправления
+                    </h3>
+
+                    <p>
+                        Действие понятно даже без визуального контекста.
+                    </p>
+
+                    <button
+                        class="audio-btn speak"
+                        data-text="Открыть корзину. Кнопка."
+                    >
+                        ▶ Послушать
+                    </button>
+
+                    <div class="code-sample">
+
+                        <span class="good-code">
+                            &lt;button aria-label="Открыть корзину"&gt;…&lt;/button&gt;
+                        </span>
+
+                    </div>
+
+                    <div class="transcript good">
+                        «Открыть корзину. Кнопка.»
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="/static/assets/app.js"></script>
+
+</body>
+
+</html>

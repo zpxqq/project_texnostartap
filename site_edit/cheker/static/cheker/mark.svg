@@ -1,0 +1,20 @@
+<svg width="80" height="64" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vedi icon</title>
+  <desc id="desc">Иконка Vedi в форме глаза с элементами кода</desc>
+  <defs>
+    <linearGradient id="eyeSmall" x1="6" y1="32" x2="74" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C3AED"/>
+      <stop offset="0.55" stop-color="#4F79FF"/>
+      <stop offset="1" stop-color="#36D1C4"/>
+    </linearGradient>
+    <linearGradient id="slashSmall" x1="39" y1="14" x2="46" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#36D1C4"/>
+      <stop offset="0.5" stop-color="#2DB4FF"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <path d="M6 32C13.2 22.2 23.5 17 34.5 17C45.5 17 55.8 22.2 63 32C55.8 41.8 45.5 47 34.5 47C23.5 47 13.2 41.8 6 32Z" stroke="url(#eyeSmall)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M24 26L18.5 32L24 38" stroke="#5A4FFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M45 26L50.5 32L45 38" stroke="#2DB4FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M39 21L30.5 43" stroke="url(#slashSmall)" stroke-width="4.6" stroke-linecap="round"/>
+</svg>
